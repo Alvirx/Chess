@@ -41,11 +41,11 @@ public:
 };
 
 /**
- * Tests if on the "A1" field on the beginning is white rook Chessman
+ * Tests if on the beginning, on the "A1" field is white rook Chessman
  */
 TEST_F(BoardTest, shouldHaveChessmansInRightPostionOnStart)
 {
-    //Chessman* chessman = board->getChessman("A1");
-    //ASSERT_EQ(chessman->getType(), ChessmanType(rook));
-    //ASSERT_EQ(chessman->isWhite(), true);
+    Chessman* chessman = board->getChessman("A1");
+    ASSERT_EQ(chessman->getType(), ChessmanType(rook));
+    ASSERT_EQ(chessman->isWhite(), true);
 }
