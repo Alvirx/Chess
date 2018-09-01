@@ -8,6 +8,7 @@
 */
 
 #include <Board.h>
+#include <iostream>
 
 #include "Board.h"
 
@@ -57,20 +58,42 @@ void Board::generateChessmen(bool white)
         kingLineIndex = 7;
     }
 
-    for (auto &i : board) {
+    for (auto &i : board)
         i[pawnsIndex] = new Chessman(white, ChessmanType(pawn));
+
+    board[0][kingLineIndex] = new Chessman(white, ChessmanType(rook));
+    board[7][kingLineIndex] = new Chessman(white, ChessmanType(rook));
+
+    board[1][kingLineIndex] = new Chessman(white, ChessmanType(knight));
+    board[6][kingLineIndex] = new Chessman(white, ChessmanType(knight));
+
+    board[2][kingLineIndex] = new Chessman(white, ChessmanType(bishop));
+    board[5][kingLineIndex] = new Chessman(white, ChessmanType(bishop));
+
+    board[3][kingLineIndex] = new Chessman(white, ChessmanType(queen));
+    board[4][kingLineIndex] = new Chessman(white, ChessmanType(king));
+}
+
+void Board::printBoard()
+{
+    for(auto &i : board)
+    {
+        for(auto &j : i)
+        {
+            if(j == nullptr)
+                std::cout<<"[ ]";
+            else
+            {
+                if(j->getType()==ChessmanType(king)) std::cout<<"[K]";
+                else if(j->getType()==ChessmanType(queen)) std::cout<<"[Q]";
+                else if(j->getType()==ChessmanType(rook)) std::cout<<"[R]";
+                else if(j->getType()==ChessmanType(knight)) std::cout<<"[N]";
+                else if(j->getType()==ChessmanType(pawn)) std::cout<<"[P]";
+                else if(j->getType()==ChessmanType(bishop)) std::cout<<"[B]";
+            }
+        }
+        std::cout<<std::endl;
     }
 
-    board[kingLineIndex][0] = new Chessman(white, ChessmanType(rook));
-    board[kingLineIndex][7] = new Chessman(white, ChessmanType(rook));
-
-    board[kingLineIndex][1] = new Chessman(white, ChessmanType(knight));
-    board[kingLineIndex][6] = new Chessman(white, ChessmanType(knight));
-
-    board[kingLineIndex][2] = new Chessman(white, ChessmanType(bishop));
-    board[kingLineIndex][5] = new Chessman(white, ChessmanType(bishop));
-
-    board[kingLineIndex][3] = new Chessman(white, ChessmanType(queen));
-    board[kingLineIndex][4] = new Chessman(white, ChessmanType(king));
 }
 

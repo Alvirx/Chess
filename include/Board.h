@@ -28,6 +28,8 @@ public:
      * @return Chessman staying on given field; null if field is empty
      */
     Chessman* getChessman(std::string field);
+    /*Temporary method for visualising board*/
+    void printBoard();
 
 
 private:

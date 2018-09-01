@@ -30,15 +30,6 @@ public:
         delete(chessman);
     }
 
-    /**
-     *
-     * @return white queen chessman
-     */
-    Chessman* getChessman() const {
-        return chessman;
-    }
-
-private:
     Chessman* chessman;
 };
 
@@ -47,12 +38,12 @@ private:
  */
 TEST_F(ChessmanTest, shouldBeWhite)
 {
-    ASSERT_EQ(getChessman()->isWhite(), true);
+    ASSERT_EQ(chessman->isWhite(), true);
 }
 /**
  * Checks if chessman properly returns information about its type
  */
 TEST_F(ChessmanTest, shouldBeQueen)
 {
-    ASSERT_EQ(getChessman()->getType(), ChessmanType(queen));
+    ASSERT_EQ(chessman->getType(), ChessmanType(queen));
 }
