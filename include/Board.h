@@ -30,10 +30,18 @@ public:
     Chessman* getChessman(std::string field);
     /*Temporary method for visualising board*/
     void printBoard();
+    /**
+     * Moves Chessmen on board
+     * @param from - field from move starts
+     * @param to - field where move ends
+     * @return taken Chessman if there was Chessman on "to" Field; Null otherwise
+     */
+    Chessman* move(std::string from, std::string to);
 
 
 private:
     void generateChessmen(bool white);
+    void translateCoordinates(int* first, int* second);
     Chessman* board[8][8];
 };
 

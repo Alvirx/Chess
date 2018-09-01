@@ -34,7 +34,8 @@ public:
 };
 
 /**
- * Tests if on the beginning, on the "A1" field is white rook Chessman
+ * Tests if on the beginning, on the "A1" and "H1" fields are white rook Chessmen
+ * and on the "H8" and "A8" are black rook Chessmen
  */
 TEST_F(BoardTest, shouldHaveRooksInRightPostionOnStart)
 {
@@ -54,7 +55,10 @@ TEST_F(BoardTest, shouldHaveRooksInRightPostionOnStart)
     ASSERT_EQ(chessman->getType(), ChessmanType(rook));
     ASSERT_EQ(chessman->isWhite(), false);
 }
-
+/**
+ * Tests if on the beginning, on the "B1" and "G1" fields are white knight Chessmen
+ * and on the "G8" and "B8" are black knight Chessmen
+ */
 TEST_F(BoardTest, shouldHaveKnightsInRightPostionOnStart)
 {
     Chessman* chessman = board->getChessman("B1");
@@ -73,7 +77,10 @@ TEST_F(BoardTest, shouldHaveKnightsInRightPostionOnStart)
     ASSERT_EQ(chessman->getType(), ChessmanType(knight));
     ASSERT_EQ(chessman->isWhite(), false);
 }
-
+/**
+ * Tests if on the beginning, on the "C1" and "F1" fields are white bishop Chessmen
+ * and on the "C8" and "F8" are black bishop Chessmen
+ */
 TEST_F(BoardTest, shouldHaveBishopsInRightPostionOnStart)
 {
     Chessman* chessman = board->getChessman("C1");
@@ -93,6 +100,10 @@ TEST_F(BoardTest, shouldHaveBishopsInRightPostionOnStart)
     ASSERT_EQ(chessman->isWhite(), false);
 }
 
+/**
+ * Tests if on the beginning, on the "D1" is white queen Chessmen and on the "E1" field is white king Chessmen
+ * and on the "D8" is black queen Chessmen and on the "E8" field is black king Chessmen
+ */
 TEST_F(BoardTest, shouldHaveQueenAndKingInRightPostionOnStart)
 {
     Chessman* chessman = board->getChessman("D1");
@@ -112,6 +123,10 @@ TEST_F(BoardTest, shouldHaveQueenAndKingInRightPostionOnStart)
     ASSERT_EQ(chessman->isWhite(), false);
 }
 
+/**
+ * Tests if on the beginning, on the second row there is a line of white pawns
+ * and on the seventh row there is a line of black pawns
+ */
 TEST_F(BoardTest, shouldHavePawnsInRightPostionOnStart)
 {
     for(int i=65;i<73;i++)
@@ -137,7 +152,9 @@ TEST_F(BoardTest, shouldHavePawnsInRightPostionOnStart)
     }
 
 }
-
+/**
+ * Tests if on the beginning rows from third to sixth are empty
+ */
 TEST_F(BoardTest, shouldHaveMiddleEmpty)
 {
     for(int i=65;i<73;i++)
@@ -152,4 +169,56 @@ TEST_F(BoardTest, shouldHaveMiddleEmpty)
             ASSERT_EQ(chessman, nullptr);
         }
     }
+}
+
+/**
+ * Tests if "move" method can move pawn to empty field
+ */
+TEST_F(BoardTest, shouldMoveFromOneFieldToOtherEmptyField)
+{
+    Chessman* chessman = board->getChessman("E2");
+    ASSERT_EQ(chessman->getType(), ChessmanType(pawn));
+    ASSERT_EQ(chessman->isWhite(), true);
+    board->move("E2", "E4");
+    ASSERT_EQ(board->getChessman("E2"), nullptr);
+    ASSERT_EQ(board->getChessman("E4"), chessman);
+
+}
+
+/**
+ * Tests if "move" method returns taken Chessman
+ */
+TEST_F(BoardTest, shouldReturnTakenChessman)
+{
+    Chessman* blackChessman = board->getChessman("D7");
+    Chessman* whiteChessman = board->getChessman("E2");
+
+
+    board->move("E2", "E4");
+    board->move("D7", "D5");
+    Chessman* takenChessman = board->move("E4", "D5");
+    ASSERT_EQ(takenChessman, blackChessman);
+    ASSERT_EQ(board->getChessman("D5"), whiteChessman);
+    ASSERT_EQ(board->getChessman("E2"), nullptr);
+    ASSERT_EQ(board->getChessman("E4"), nullptr);
+    ASSERT_EQ(board->getChessman("D7"), nullptr);
+}
+/**
+ * Tests if "move" method not change anything if "from" field is empty
+ */
+TEST_F(BoardTest, shouldNotMoveAnythingIfFromFieldIsEmpty)
+{
+    Chessman* blackChessman = board->getChessman("D7");
+    Chessman* whiteChessman = board->getChessman("E2");
+
+
+    board->move("E2", "E4");
+    board->move("D7", "D5");
+    Chessman* takenChessman = board->move("D4", "D5");
+    ASSERT_EQ(takenChessman, nullptr);
+    ASSERT_EQ(board->getChessman("D5"), blackChessman);
+    ASSERT_EQ(board->getChessman("E4"), whiteChessman);
+    ASSERT_EQ(board->getChessman("E2"), nullptr);
+    ASSERT_EQ(board->getChessman("D7"), nullptr);
+    ASSERT_EQ(board->getChessman("D4"), nullptr);
 }

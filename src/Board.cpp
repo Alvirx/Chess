@@ -16,16 +16,10 @@ Chessman* Board::getChessman(std::string field)
 {
     //first character indicates first coordinate
     //example: A1 -> first coordinate is A, so it will be first column
-    char firstCoordinate = field[0];
-    char secondCoordinate = field[1];
-    //then both Coordinates must be translated to simple integers from 0 to 7
-
-    //'A' index in ASCII is 65, so if char 'A' means 0 its integer value has to be reduced by 65
-    int firstIndex = (int)firstCoordinate - 65;
-    //'1' index in ASCII is 49 so if char '1' means 0 its integer value has to be reduced by 49
-    int secondIndex = (int)secondCoordinate - 49;
-
-    return board[firstIndex][secondIndex];
+    auto firstCoordinate = (int)field[0];
+    auto secondCoordinate = (int)field[1];
+    translateCoordinates(&firstCoordinate, &secondCoordinate);
+    return board[firstCoordinate][secondCoordinate];
 }
 
 Board::Board()
@@ -76,6 +70,9 @@ void Board::generateChessmen(bool white)
 
 void Board::printBoard()
 {
+    for(int i=0;i<8;i++)
+        std::cout<<"___";
+    std::cout<<std::endl;
     for(auto &i : board)
     {
         for(auto &j : i)
@@ -94,6 +91,37 @@ void Board::printBoard()
         }
         std::cout<<std::endl;
     }
+    for(int i=0;i<8;i++)
+        std::cout<<"___";
 
+}
+
+Chessman *Board::move(std::string from, std::string to)
+{
+    auto firstCoordinate = (int)from[0];
+    auto secondCoordinate = (int)from[1];
+    translateCoordinates(&firstCoordinate, &secondCoordinate);
+    Chessman* movingChessman = board[firstCoordinate][secondCoordinate];
+
+    if(movingChessman == nullptr)
+        return nullptr;
+    else
+    {
+        board[firstCoordinate][secondCoordinate] = nullptr;
+        firstCoordinate = (int)to[0];
+        secondCoordinate = (int)to[1];
+        translateCoordinates(&firstCoordinate, &secondCoordinate);
+        Chessman* takenChessman =  board[firstCoordinate][secondCoordinate];
+        board[firstCoordinate][secondCoordinate] = movingChessman;
+        return takenChessman;
+    }
+}
+
+void Board::translateCoordinates(int *first, int *second)
+{
+    //'A' index in ASCII is 65, so if char 'A' means 0 its integer value has to be reduced by 65
+    *first = *first- 65;
+    //'1' index in ASCII is 49 so if char '1' means 0 its integer value has to be reduced by 49
+    *second = *second - 49;
 }
 
