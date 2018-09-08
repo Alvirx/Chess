@@ -6,9 +6,15 @@
  * @author Bartosz Gorski "Alvirx"
  * @version 1.0 29.08.2018
 */
-#include <Chessman.h>
+
+#include <Queen.h>
+#include <King.h>
+#include <Bishop.h>
+#include <Knight.h>
+#include <Rook.h>
+#include <Pawn.h>
 #include "gtest/gtest.h"
-#include "ChessmanType.h"
+
 
 /**
  * Fixture that creates, stores and deletes tested instance of Chessman
@@ -20,30 +26,81 @@ public:
      */
     ChessmanTest()
     {
-        chessman = new Chessman(true, ChessmanType(queen));
+        whiteQueen  = new Queen(true);
+        whitePawn   = new Pawn(true);
+        whiteKing   = new King(true);
+        blackKnight = new Knight(false);
+        blackRook   = new Rook(false);
+        blackBishop = new Bishop(false);
     }
     /**
      * deletes chessman
      */
     ~ChessmanTest() override
     {
-        delete(chessman);
+        delete(whiteQueen);
     }
 
-    Chessman* chessman;
+    Chessman* whiteQueen;
+    Chessman* whitePawn;
+    Chessman* whiteKing;
+    Chessman* blackBishop;
+    Chessman* blackRook;
+    Chessman* blackKnight;
 };
 
+
 /**
- * Checks if chessman properly returns information about its color
+ * Checks if queen chessman works and exists
  */
-TEST_F(ChessmanTest, shouldBeWhite)
+TEST_F(ChessmanTest, shouldThereBeQueen)
 {
-    ASSERT_EQ(chessman->isWhite(), true);
+    ASSERT_EQ(whiteQueen->isWhite(), true);
+    ASSERT_NE(dynamic_cast<Queen*>(whiteQueen), nullptr);
 }
+
 /**
- * Checks if chessman properly returns information about its type
+ * Checks if king chessman works and exists
  */
-TEST_F(ChessmanTest, shouldBeQueen)
+TEST_F(ChessmanTest, shouldThereBeKing)
 {
-    ASSERT_EQ(chessman->getType(), ChessmanType(queen));
+    ASSERT_EQ(whiteKing->isWhite(), true);
+    ASSERT_NE(dynamic_cast<King*>(whiteKing), nullptr);
 }
+
+/**
+ * Checks if pawn chessman works and exists
+ */
+TEST_F(ChessmanTest, shouldThereBePawn)
+{
+    ASSERT_EQ(whitePawn->isWhite(), true);
+    ASSERT_NE(dynamic_cast<Pawn*>(whitePawn), nullptr);
+}
+
+/**
+ * Checks if bishop chessman works and exists
+ */
+TEST_F(ChessmanTest, shouldThereBeBishop)
+{
+    ASSERT_EQ(blackBishop->isWhite(), false);
+    ASSERT_NE(dynamic_cast<Bishop*>(blackBishop), nullptr);
+}
+
+/**
+ * Checks if rook chessman works and exists
+ */
+TEST_F(ChessmanTest, shouldThereBeRook)
+{
+    ASSERT_EQ(blackRook->isWhite(), false);
+    ASSERT_NE(dynamic_cast<Rook*>(blackRook), nullptr);
+}
+
+/**
+ * Checks if knight chessman works and exists
+ */
+TEST_F(ChessmanTest, shouldThereBeKnight)
+{
+    ASSERT_EQ(blackKnight->isWhite(), false);
+    ASSERT_NE(dynamic_cast<Knight*>(blackKnight), nullptr);
+}
+

@@ -6,9 +6,15 @@
  * @author Bartosz Gorski "Alvirx"
  * @version 1.0 29.08.2018
 */
+
 #ifndef CHESS_CHESSMAN_H
 #define CHESS_CHESSMAN_H
-#include "ChessmanType.h"
+
+
+#include <vector>
+#include "Board.h"
+
+class Board;
 
 /**
  * Class that stores information about particular Chessman
@@ -16,20 +22,16 @@
  */
 class Chessman {
 public:
+
     /**
     * Constructs Chessman
     *
     * @param white - boolean value, if true indicates Chessman as white; black otherwise
     * @param type - enum indicating type of Chessman
     */
-    Chessman(bool white, ChessmanType type);
+    explicit Chessman(bool white);
 
-    /**
-    * type getter
-    *
-    * @return type of Chessman
-    */
-    ChessmanType getType() const;
+    virtual std::vector<int> *getPossibleMoves(Board *board) =0;
 
     /**
     * white getter
@@ -37,10 +39,12 @@ public:
     * @return true if Chessman is white; false otherwise
     */
     bool isWhite() const;
-private:
-    ChessmanType type;
+
+protected:
     bool white;
 };
 
-
 #endif //CHESS_CHESSMAN_H
+
+
+

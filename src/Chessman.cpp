@@ -8,15 +8,10 @@
 */
 #include "Chessman.h"
 
-Chessman::Chessman(bool white, ChessmanType type)
+Chessman::Chessman(bool white) : white(white)
 {
-    this->white = white;
-    this->type = type;
 }
 
-ChessmanType Chessman::getType() const {
-    return type;
-}
 
 bool Chessman::isWhite() const {
     return white;

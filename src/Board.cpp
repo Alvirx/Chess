@@ -7,9 +7,13 @@
  * @version 1.0 29.08.2018
 */
 
-#include <Board.h>
 #include <iostream>
-
+#include "Pawn.h"
+#include "Rook.h"
+#include "Knight.h"
+#include "Bishop.h"
+#include "Queen.h"
+#include "King.h"
 #include "Board.h"
 
 Chessman* Board::getChessman(std::string field)
@@ -53,24 +57,24 @@ void Board::generateChessmen(bool white)
     }
 
     for (auto &i : board)
-        i[pawnsIndex] = new Chessman(white, ChessmanType(pawn));
+        i[pawnsIndex] = new Pawn(white);
 
-    board[0][kingLineIndex] = new Chessman(white, ChessmanType(rook));
-    board[7][kingLineIndex] = new Chessman(white, ChessmanType(rook));
+    board[0][kingLineIndex] = new Rook(white);
+    board[7][kingLineIndex] = new Rook(white);
 
-    board[1][kingLineIndex] = new Chessman(white, ChessmanType(knight));
-    board[6][kingLineIndex] = new Chessman(white, ChessmanType(knight));
+    board[1][kingLineIndex] = new Knight(white);
+    board[6][kingLineIndex] = new Knight(white);
 
-    board[2][kingLineIndex] = new Chessman(white, ChessmanType(bishop));
-    board[5][kingLineIndex] = new Chessman(white, ChessmanType(bishop));
+    board[2][kingLineIndex] = new Bishop(white);
+    board[5][kingLineIndex] = new Bishop(white);
 
-    board[3][kingLineIndex] = new Chessman(white, ChessmanType(queen));
-    board[4][kingLineIndex] = new Chessman(white, ChessmanType(king));
+    board[3][kingLineIndex] = new Queen(white);
+    board[4][kingLineIndex] = new King(white);
 }
 
 void Board::printBoard()
 {
-    for(int i=0;i<8;i++)
+    /*for(int i=0;i<8;i++)
         std::cout<<"___";
     std::cout<<std::endl;
     for(auto &i : board)
@@ -92,7 +96,7 @@ void Board::printBoard()
         std::cout<<std::endl;
     }
     for(int i=0;i<8;i++)
-        std::cout<<"___";
+        std::cout<<"___";*/
 
 }
 
