@@ -22,7 +22,7 @@ class Board {
 public:
 
     /**
-     * Generates whole board and sets right chessmen to their position
+     * Initializes board with nulls
      */
     Board();
 
@@ -32,24 +32,28 @@ public:
      * @param field chosen
      * @return Chessman staying on given field; null if field is empty
      */
-    Chessman* getChessman(std::string field);
+    Chessman* getChessman(int x, int y);
 
+    /**
+     * sets Chessman on particular position
+     */
+    void setChessman(int x, int y, Chessman* chessman);
 
     /*Temporary method for visualising board*/
     void printBoard();
 
     /**
      * Moves Chessmen on board
-     * @param from - field from move starts
-     * @param to - field where move ends
+     * @param x1 - X value of field from move starts
+     * @param y1 - Y value of field from move starts
+     * @param x2 - X value of field where move ends
+     * @param y2 - Y value of field where move ends
      * @return taken Chessman if there was Chessman on "to" Field; Null otherwise
      */
-    Chessman* move(std::string from, std::string to);
+    Chessman* move(int x1, int y1, int x2, int y2);
 
 
 private:
-    void translateCoordinates(int *first, int *second);
-    void generateChessmen(bool white);
     Chessman* board[8][8];
 };
 

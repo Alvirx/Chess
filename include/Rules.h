@@ -13,8 +13,21 @@
 #define CHESS_RULES_H
 
 
+#include "Board.h"
+
 class Rules {
-    //TODO divide board on board-functionality and rules-functionality
+public:
+    explicit Rules(Board* board);
+    ~Rules();
+
+    Chessman* getChessman(std::string field);
+
+private:
+    Board* board;
+    void generateChessmen(bool white);
+    /*void translateCoordinates(int *first, int *second);*/
+    int getX(std::string field);
+    int getY(std::string field);
 };
 
 
