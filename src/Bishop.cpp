@@ -10,8 +10,9 @@
 
 #include "Bishop.h"
 
-std::vector<int> *Bishop::getPossibleMoves(Board *board) {
-    return nullptr;
+std::vector<std::tuple<int, int>> Bishop::getPossibleMoves(Board *board, int x, int y) {
+    std::vector<std::tuple<int, int>> possibleMoves;
+    return possibleMoves;
 }
 
 Bishop::Bishop(bool white) : Chessman(white) {}

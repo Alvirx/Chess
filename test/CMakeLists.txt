@@ -23,6 +23,6 @@ ADD_LIBRARY(src
         ../src/Rules.cpp
         ../include/Rules.h)
 
-add_executable(Tests BoardTest.cpp ChessmanTest.cpp RulesTest.cpp)
+add_executable(Tests BoardTest.cpp ChessmanTest.cpp RulesTest.cpp PawnTest.cpp)
 target_link_libraries(Tests gtest gtest_main)
 target_link_libraries(Tests src)

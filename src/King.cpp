@@ -10,8 +10,9 @@
 
 #include "King.h"
 
-std::vector<int> *King::getPossibleMoves(Board *board) {
-    return nullptr;
+std::vector<std::tuple<int, int>> King::getPossibleMoves(Board *board, int x, int y) {
+    std::vector<std::tuple<int, int>> possibleMoves;
+    return possibleMoves;
 }
 
 King::King(bool white) : Chessman(white) {}

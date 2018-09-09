@@ -39,6 +39,11 @@ public:
     ~ChessmanTest() override
     {
         delete(whiteQueen);
+        delete(whitePawn);
+        delete(whiteKing);
+        delete(blackBishop);
+        delete(blackRook);
+        delete(blackKnight);
     }
 
     Chessman* whiteQueen;

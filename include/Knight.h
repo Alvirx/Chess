@@ -18,7 +18,7 @@ class Knight : public Chessman{
 public:
     explicit Knight(bool white);
 
-    std::vector<int> *getPossibleMoves(Board *board) override;
+    std::vector<std::tuple<int, int>> getPossibleMoves(Board *board, int x, int y) override;
 
 };
 

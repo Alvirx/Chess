@@ -12,6 +12,7 @@
 
 
 #include <vector>
+#include <tuple>
 #include "Board.h"
 
 class Board;
@@ -31,7 +32,7 @@ public:
     */
     explicit Chessman(bool white);
 
-    virtual std::vector<int> *getPossibleMoves(Board *board) =0;
+    virtual std::vector<std::tuple<int, int>> getPossibleMoves(Board *board, int x, int y) =0;
 
     /**
     * white getter
@@ -39,6 +40,8 @@ public:
     * @return true if Chessman is white; false otherwise
     */
     bool isWhite() const;
+
+    virtual ~Chessman() = default;
 
 protected:
     bool white;

@@ -9,8 +9,9 @@
 
 #include "Queen.h"
 
-std::vector<int> *Queen::getPossibleMoves(Board *board) {
-    return nullptr;
+std::vector<std::tuple<int, int>> Queen::getPossibleMoves(Board *board, int x, int y) {
+    std::vector<std::tuple<int, int>> possibleMoves;
+    return possibleMoves;
 }
 
 Queen::Queen(bool white) : Chessman(white) {
