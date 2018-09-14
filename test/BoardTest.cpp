@@ -8,6 +8,7 @@
 */
 
 #include <Board.h>
+#include <Move.h>
 #include "gtest/gtest.h"
 #include "Chessman.h"
 #include "Rook.h"
@@ -124,4 +125,22 @@ TEST_F(BoardTest, shouldNotMoveAnythingIfFromFieldIsEmpty)
     ASSERT_EQ(board->getChessman(4, 1), nullptr);
     ASSERT_EQ(board->getChessman(4, 1), nullptr);
     ASSERT_EQ(board->getChessman(3, 3), nullptr);
+}
+
+/**
+ * Tests if "lastMove" method returns last move
+ */
+TEST_F(BoardTest, shouldReturnLastMove)
+{
+    Chessman* whiteChessman = new Pawn(true);
+    board->setChessman(4, 1, whiteChessman);
+
+
+    board->move(4, 1, 4, 3);
+    Move* move = board->getLastMove();
+    ASSERT_EQ(move->getTakenChessman(), nullptr);
+    ASSERT_EQ(move->getXFrom(), 4);
+    ASSERT_EQ(move->getYFrom(), 1);
+    ASSERT_EQ(move->getXTo(), 4);
+    ASSERT_EQ(move->getXTo(), 3);
 }

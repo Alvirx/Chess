@@ -14,11 +14,6 @@
 
 Chessman* Board::getChessman(int x, int y)
 {
-    //first character indicates first coordinate
-    //example: A1 -> first coordinate is A, so it will be first column
-    /*auto firstCoordinate = (int)field[0];
-    auto secondCoordinate = (int)field[1];
-    translateCoordinates(&firstCoordinate, &secondCoordinate);*/
     return board[x][y];
 }
 
@@ -79,5 +74,9 @@ Chessman *Board::move(int x1, int y1, int x2, int y2)
 void Board::setChessman(int x, int y, Chessman *chessman)
 {
     board[x][y] = chessman;
+}
+
+Move *Board::getLastMove() {
+    return nullptr;
 }
 

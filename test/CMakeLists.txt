@@ -21,7 +21,7 @@ ADD_LIBRARY(src
         ../src/Pawn.cpp
         ../include/Pawn.h
         ../src/Rules.cpp
-        ../include/Rules.h)
+        ../include/Rules.h ../include/Move.h)
 
 add_executable(Tests BoardTest.cpp ChessmanTest.cpp RulesTest.cpp PawnTest.cpp)
 target_link_libraries(Tests gtest gtest_main)

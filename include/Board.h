@@ -11,6 +11,7 @@
 #define CHESS_BOARD_H
 
 #include <string>
+#include "Move.h"
 #include "Chessman.h"
 
 class Chessman;
@@ -51,6 +52,8 @@ public:
      * @return taken Chessman if there was Chessman on "to" Field; Null otherwise
      */
     Chessman* move(int x1, int y1, int x2, int y2);
+
+    Move* getLastMove();
 
 
 private:

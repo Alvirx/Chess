@@ -33,6 +33,23 @@ std::vector<std::tuple<int, int>> Pawn::getPossibleMoves(Board *board, int x, in
             possibleMoves.emplace_back(x, y+(2*directionModifier));
     }
 
+    if(x<7)
+    {
+        Chessman* chessman = board->getChessman(x+1, y+directionModifier);
+        if(chessman!= nullptr && (chessman->isWhite()!=this->isWhite()))
+        {
+            possibleMoves.emplace_back(x+1, y+(directionModifier));
+        }
+    }
+
+    if(x>0)
+    {
+        Chessman* chessman = board->getChessman(x-1, y+directionModifier);
+        if(chessman!= nullptr && (chessman->isWhite()!=this->isWhite()))
+        {
+            possibleMoves.emplace_back(x-1, y+(directionModifier));
+        }
+    }
 
     return possibleMoves;
 }
