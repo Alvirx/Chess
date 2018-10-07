@@ -52,18 +52,22 @@ void Rules::generateChessmen(bool white)
         kingLineIndex = 7;
     }
 
+
+
     for (int i=0;i<8;i++)
-        board->setChessman(i,pawnsIndex, new Pawn(white));
+        (new Pawn(white, board))->set(i, pawnsIndex);
 
-    board->setChessman(0, kingLineIndex, new Rook(white));
-    board->setChessman(7, kingLineIndex, new Rook(white));
+    (new Rook(white, board))->set(0, kingLineIndex);
+    (new Rook(white, board))->set(7, kingLineIndex);
 
-    board->setChessman(1, kingLineIndex, new Knight(white));
-    board->setChessman(6, kingLineIndex, new Knight(white));
-    board->setChessman(2, kingLineIndex, new Bishop(white));
-    board->setChessman(5, kingLineIndex, new Bishop(white));
-    board->setChessman(3, kingLineIndex, new Queen(white));
-    board->setChessman(4, kingLineIndex, new King(white));
+    (new Knight(white, board))->set(1, kingLineIndex);
+    (new Knight(white, board))->set(6, kingLineIndex);
+
+    (new Bishop(white, board))->set(2, kingLineIndex);
+    (new Bishop(white, board))->set(5, kingLineIndex);
+
+    (new Queen(white, board))->set(3, kingLineIndex);
+    (new King(white, board))->set(4, kingLineIndex);
 }
 
 int Rules::getX(std::string field)

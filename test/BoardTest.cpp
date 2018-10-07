@@ -9,6 +9,7 @@
 
 #include <Board.h>
 #include <Move.h>
+#include <RegularMove.h>
 #include "gtest/gtest.h"
 #include "Chessman.h"
 #include "Rook.h"
@@ -59,72 +60,48 @@ TEST_F(BoardTest, shouldGetChessmanProperly)
 }
 
 /**
- * Tests if "setChessman" sets Chessman on chosen field
- */
-TEST_F(BoardTest, shouldSetChessmanProperly)
-{
-    board->setChessman(0, 0, new Queen(true));
-    Chessman* chessman = board->getChessman(0, 0);
-    ASSERT_NE(dynamic_cast<Queen*>(chessman), nullptr);
-    ASSERT_EQ(chessman->isWhite(), true);
-}
-
-
-/**
  * Tests if "move" method can move pawn to empty field
  */
 TEST_F(BoardTest, shouldMoveFromOneFieldToOtherEmptyField)
 {
-    Chessman* chessman = new Pawn(true);
-    board->setChessman(4, 1, chessman);
-    ASSERT_NE(dynamic_cast<Pawn*>(chessman), nullptr);
-    ASSERT_EQ(chessman->isWhite(), true);
-    board->move(4, 1, 4, 3);
-    ASSERT_EQ(board->getChessman(4, 1), nullptr);
-    ASSERT_EQ(board->getChessman(4, 3), chessman);
-}
-
-
-/**
- * Tests if "move" method returns taken Chessman
- */
-TEST_F(BoardTest, shouldReturnTakenChessman)
-{
-    Chessman* blackChessman = new Pawn(false);
-    Chessman* whiteChessman = new Pawn(true);
-    board->setChessman(3, 6, blackChessman);
-    board->setChessman(4, 1, whiteChessman);
-
-    board->move(4, 1, 4, 3);
-    board->move(3, 6, 3, 4);
-    Chessman* takenChessman = board->move(4, 3, 3, 4);
-    ASSERT_EQ(takenChessman, blackChessman);
-    ASSERT_EQ(board->getChessman(3, 4), whiteChessman);
-    ASSERT_EQ(board->getChessman(4, 1), nullptr);
-    ASSERT_EQ(board->getChessman(4, 3), nullptr);
-    ASSERT_EQ(board->getChessman(3, 6), nullptr);
+    Chessman* whitePawn = new Pawn(true, board);
+    whitePawn->set(1,1);
+    board->move(new RegularMove(1,1,2,2));
+    ASSERT_EQ(board->getChessman(2,2), whitePawn);
+    ASSERT_EQ(board->getChessman(1,1), nullptr);
 }
 
 /**
- * Tests if "move" method not change anything if "from" field is empty
+ * Tests if "undo" method can undo move
  */
-TEST_F(BoardTest, shouldNotMoveAnythingIfFromFieldIsEmpty)
+TEST_F(BoardTest, shouldUndoMoves)
 {
-    Chessman* blackChessman = new Pawn(false);
-    Chessman* whiteChessman = new Pawn(true);
-    board->setChessman(3, 6, blackChessman);
-    board->setChessman(4, 1, whiteChessman);
+    Chessman* whitePawn = new Pawn(true, board);
+    whitePawn->set(1,1);
+    board->move(new RegularMove(1,1,2,2));
+    ASSERT_EQ(board->getChessman(2,2), whitePawn);
+    ASSERT_EQ(board->getChessman(1,1), nullptr);
+    board->undo();
+    ASSERT_EQ(board->getChessman(1,1), whitePawn);
+    ASSERT_EQ(board->getChessman(2,2), nullptr);
+}
 
-
-    board->move(4, 1, 4, 3);
-    board->move(3, 6, 3, 4);
-    Chessman* takenChessman = board->move(3, 3, 3, 4);
-    ASSERT_EQ(takenChessman, nullptr);
-    ASSERT_EQ(board->getChessman(3, 4), blackChessman);
-    ASSERT_EQ(board->getChessman(4, 3), whiteChessman);
-    ASSERT_EQ(board->getChessman(4, 1), nullptr);
-    ASSERT_EQ(board->getChessman(4, 1), nullptr);
-    ASSERT_EQ(board->getChessman(3, 3), nullptr);
+/**
+ * Tests if "redo" method can redo move
+ */
+TEST_F(BoardTest, shouldRedoMoves)
+{
+    Chessman* whitePawn = new Pawn(true, board);
+    whitePawn->set(1,1);
+    board->move(new RegularMove(1,1,2,2));
+    ASSERT_EQ(board->getChessman(2,2), whitePawn);
+    ASSERT_EQ(board->getChessman(1,1), nullptr);
+    board->undo();
+    ASSERT_EQ(board->getChessman(1,1), whitePawn);
+    ASSERT_EQ(board->getChessman(2,2), nullptr);
+    board->redo();
+    ASSERT_EQ(board->getChessman(2,2), whitePawn);
+    ASSERT_EQ(board->getChessman(1,1), nullptr);
 }
 
 /**
@@ -132,15 +109,19 @@ TEST_F(BoardTest, shouldNotMoveAnythingIfFromFieldIsEmpty)
  */
 TEST_F(BoardTest, shouldReturnLastMove)
 {
-    Chessman* whiteChessman = new Pawn(true);
-    board->setChessman(4, 1, whiteChessman);
+    Chessman* whiteChessman = new Pawn(true, board);
+    whiteChessman->set(4,1);
+    Move* move = new RegularMove(4,1,4,3);
+    ASSERT_EQ(board->getLastMove(), nullptr);
+    board->move(move);
+    ASSERT_EQ(board->getLastMove(), move);
 
+    Move* nextMove = new RegularMove(4,3,4,4);
+    board->move(nextMove);
+    ASSERT_EQ(board->getLastMove(), nextMove);
+    board->undo();
+    ASSERT_EQ(board->getLastMove(), move);
+    board->redo();
+    ASSERT_EQ(board->getLastMove(), nextMove);
 
-    board->move(4, 1, 4, 3);
-    Move* move = board->getLastMove();
-    ASSERT_EQ(move->getTakenChessman(), nullptr);
-    ASSERT_EQ(move->getXFrom(), 4);
-    ASSERT_EQ(move->getYFrom(), 1);
-    ASSERT_EQ(move->getXTo(), 4);
-    ASSERT_EQ(move->getXTo(), 3);
 }

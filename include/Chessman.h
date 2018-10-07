@@ -12,11 +12,11 @@
 
 
 #include <vector>
-#include <tuple>
 #include "Board.h"
+#include "Move.h"
 
 class Board;
-
+class Move;
 /**
  * Class that stores information about particular Chessman
  * and allows to retrieve information form its instances
@@ -28,11 +28,28 @@ public:
     * Constructs Chessman
     *
     * @param white - boolean value, if true indicates Chessman as white; black otherwise
-    * @param type - enum indicating type of Chessman
+    * @param board - board where chessman stay
     */
-    explicit Chessman(bool white);
+    explicit Chessman(bool white, Board *board);
 
-    virtual std::vector<std::tuple<int, int>> getPossibleMoves(Board *board, int x, int y) =0;
+    /**
+     * sets Chessman on chosen position
+     * @param x - X coordinate on board
+     * @param y - Y coordinate on board
+     */
+    void set(int x, int y);
+
+    void remove();
+
+    void setOnBoard(int x, int y, Board* board);
+
+    /**
+     * Calculates possible moves
+     * @return vector of possible moves
+     */
+    virtual std::vector<Move *> getPossibleMoves() =0;
+
+
 
     /**
     * white getter
@@ -43,8 +60,17 @@ public:
 
     virtual ~Chessman() = default;
 
+    int getX() const;
+
+    int getY() const;
+
 protected:
     bool white;
+    int x;
+    int y;
+    Board* board;
+    std::vector<Move*> possibleMoves;
+    Move* lastMove;
 };
 
 #endif //CHESS_CHESSMAN_H

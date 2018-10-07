@@ -15,11 +15,31 @@
 #include "Chessman.h"
 
 class Chessman;
-
+class Board;
 class Move{
 public:
-    Move(int xFrom, int yFrom, int xTo, int yTo, Chessman *takenChessman) : xFrom(xFrom), yFrom(yFrom), xTo(xTo),
-                                                                            yTo(yTo), takenChessman(takenChessman) {}
+    Move(int xFrom, int yFrom, int xTo, int yTo) :
+    xFrom(xFrom),
+    yFrom(yFrom),
+    xTo(xTo),
+    yTo(yTo)
+    {
+        takenChessman = nullptr;
+    }
+
+    /**
+     * Executes move on specified board
+     * @param board - board where move should be done
+     * @return true if move was executed correctly, false if something went wrong and move has not been done
+     */
+    virtual bool execute(Board* board)=0;
+
+    /**
+     * Undo the move that was done
+     * @param board - board where move should be undone
+     * @return true if move was undone correctly, false if something went wrong and move has not been undone
+     */
+    virtual bool undo(Board* board)=0;
 
     int getXFrom() const {
         return xFrom;
@@ -37,11 +57,14 @@ public:
         return yTo;
     }
 
-    Chessman *getTakenChessman() const {
-        return takenChessman;
-    };
+    bool operator()(const Move *rhs) const {
+        return xFrom == rhs->xFrom &&
+               yFrom == rhs->yFrom &&
+               xTo == rhs->xTo &&
+               yTo == rhs->yTo;
+    }
 
-private:
+protected:
     int xFrom;
     int yFrom;
     int xTo;

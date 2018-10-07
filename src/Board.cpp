@@ -56,19 +56,12 @@ void Board::printBoard()
 
 }
 
-Chessman *Board::move(int x1, int y1, int x2, int y2)
+void Board::move(Move* move)
 {
-    Chessman* movingChessman = board[x1][y1];
-
-    if(movingChessman == nullptr)
-        return nullptr;
-    else
-    {
-        board[x1][y1] = nullptr;
-        Chessman* takenChessman =  board[x2][y2];
-        board[x2][y2] = movingChessman;
-        return takenChessman;
-    }
+    move->execute(this);
+    movesDone.push(move);
+    while (!movesToDo.empty())
+        movesToDo.pop();
 }
 
 void Board::setChessman(int x, int y, Chessman *chessman)
@@ -77,6 +70,45 @@ void Board::setChessman(int x, int y, Chessman *chessman)
 }
 
 Move *Board::getLastMove() {
-    return nullptr;
+    if(movesDone.empty())
+        return nullptr;
+
+    return movesDone.top();
 }
 
+void Board::undo()
+{
+    if(movesDone.empty())
+        return;
+    Move* move = movesDone.top();
+    movesDone.pop();
+    move->undo(this);
+    movesToDo.push(move);
+}
+
+void Board::redo()
+{
+    if(movesToDo.empty())
+        return;
+    Move* move = movesToDo.top();
+    movesToDo.pop();
+    move->execute(this);
+    movesDone.push(move);
+}
+/*
+//Game??
+while(gameIsOn())
+{
+    currentPlayer->move();
+    playerQueue->enquee(currentPlayer);
+    currentPlayer = playerQueue->dequeue();
+}
+
+//Player
+Field* field = choseField();
+moves = field->getPossibleMoves();
+if(!moves.empty())
+{
+
+}
+ */

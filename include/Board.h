@@ -11,13 +11,15 @@
 #define CHESS_BOARD_H
 
 #include <string>
+#include <stack>
 #include "Move.h"
 #include "Chessman.h"
 
+class Move;
 class Chessman;
 
 /**
- * Class storing board`s fields, and Chessmen
+ * Class storing board`s fields and Chessmen data
  */
 class Board {
 public:
@@ -45,19 +47,21 @@ public:
 
     /**
      * Moves Chessmen on board
-     * @param x1 - X value of field from move starts
-     * @param y1 - Y value of field from move starts
-     * @param x2 - X value of field where move ends
-     * @param y2 - Y value of field where move ends
-     * @return taken Chessman if there was Chessman on "to" Field; Null otherwise
+     * @param move - move to do
      */
-    Chessman* move(int x1, int y1, int x2, int y2);
+    void move(Move* move);
 
     Move* getLastMove();
+
+    void undo();
+
+    void redo();
 
 
 private:
     Chessman* board[8][8];
+    std::stack<Move*> movesDone;
+    std::stack<Move*> movesToDo;
 };
 
 

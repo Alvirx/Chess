@@ -15,8 +15,10 @@
 
 class Queen : public Chessman{
 public:
-    explicit Queen(bool white);
-    std::vector<std::tuple<int, int>> getPossibleMoves(Board *board, int x, int y) override;
+
+   Queen(bool white, Board *board);
+
+    std::vector<Move *> getPossibleMoves() override;
 };
 
 

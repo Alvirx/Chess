@@ -15,6 +15,9 @@
 
 #include "Board.h"
 
+class Chessman;
+class Board;
+
 class Rules {
 public:
     explicit Rules(Board* board);

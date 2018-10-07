@@ -16,9 +16,10 @@
 
 class Bishop : public Chessman {
 public:
-    explicit Bishop(bool white);
 
-    std::vector<std::tuple<int, int>> getPossibleMoves(Board *board, int x, int y) override;
+    Bishop(bool white, Board *board);
+
+    std::vector<Move *> getPossibleMoves() override;
 
 };
 

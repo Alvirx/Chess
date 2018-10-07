@@ -16,9 +16,10 @@
 
 class King : public Chessman{
 public:
-    explicit King(bool white);
 
-    std::vector<std::tuple<int, int>> getPossibleMoves(Board *board, int x, int y) override;
+    King(bool white, Board *board);
+
+    std::vector<Move *> getPossibleMoves() override;
 
 };
 

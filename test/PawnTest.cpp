@@ -9,6 +9,7 @@
 #include <Pawn.h>
 #include <Board.h>
 #include "gtest/gtest.h"
+#include "RegularMove.h"
 
 /**
  * Fixture that creates, stores and deletes tested instance of Chessman
@@ -20,9 +21,9 @@ public:
      */
     PawnTest()
     {
-        whitePawn   = new Pawn(true);
-        blackPawn   = new Pawn(false);
         board = new Board();
+        whitePawn   = new Pawn(true, board);
+        blackPawn   = new Pawn(false, board);
     }
 
     /**
@@ -46,15 +47,16 @@ public:
  */
 TEST_F(PawnTest, shouldMoveForwardByOneFieldIfThatsEmpty)
 {
-    board->setChessman(0, 2, whitePawn);
-    std::vector<std::tuple<int, int>> possibleMoves = whitePawn->getPossibleMoves(board, 0, 2);
-    ASSERT_EQ(possibleMoves.size(), 1);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,3)), possibleMoves.end());
+    whitePawn->set(0,2);
+    std::vector<Move*> possibleMoves = whitePawn->getPossibleMoves();
 
-    board->setChessman(0, 5, blackPawn);
-    possibleMoves = blackPawn->getPossibleMoves(board, 0, 5);
     ASSERT_EQ(possibleMoves.size(), 1);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,4)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0, 2, 0, 3)), possibleMoves.end());
+
+    blackPawn->set(0,5);
+    possibleMoves = blackPawn->getPossibleMoves();
+    ASSERT_EQ(possibleMoves.size(), 1);
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,5,0,4)), possibleMoves.end());
 }
 
 /**
@@ -62,9 +64,9 @@ TEST_F(PawnTest, shouldMoveForwardByOneFieldIfThatsEmpty)
  */
 TEST_F(PawnTest, shouldNotMoveForwardIfFieldInFrontIsNotEmpty)
 {
-    board->setChessman(0, 1, whitePawn);
-    board->setChessman(0, 2, blackPawn);
-    std::vector<std::tuple<int, int>> possibleMoves = whitePawn->getPossibleMoves(board, 0, 1);
+    whitePawn->set(0,1);
+    blackPawn->set(0,2);
+    std::vector<Move*> possibleMoves = whitePawn->getPossibleMoves();
     ASSERT_TRUE(possibleMoves.empty());
 }
 
@@ -73,18 +75,17 @@ TEST_F(PawnTest, shouldNotMoveForwardIfFieldInFrontIsNotEmpty)
  */
 TEST_F(PawnTest, shouldCanMoveForwardByTwoFieldsIfThoseAreEmptyOnStart)
 {
-    board->setChessman(0, 1, whitePawn);
-    std::vector<std::tuple<int, int>> possibleMoves = whitePawn->getPossibleMoves(board, 0, 1);
+    whitePawn->set(0,1);
+    std::vector<Move*> possibleMoves = whitePawn->getPossibleMoves();
     ASSERT_EQ(possibleMoves.size(), 2);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,2)), possibleMoves.end());
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,3)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,1,0,2)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,1,0,3)), possibleMoves.end());
 
-
-    board->setChessman(0, 6, blackPawn);
-    possibleMoves = blackPawn->getPossibleMoves(board, 0, 6);
+    blackPawn->set(0, 6);
+    possibleMoves = blackPawn->getPossibleMoves();
     ASSERT_EQ(possibleMoves.size(), 2);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,5)), possibleMoves.end());
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,4)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,6,0,5)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,6,0,4)), possibleMoves.end());
 }
 
 /**
@@ -92,18 +93,18 @@ TEST_F(PawnTest, shouldCanMoveForwardByTwoFieldsIfThoseAreEmptyOnStart)
  */
 TEST_F(PawnTest, shouldCanMoveDiagonallyIfThereIsEnemyChessman)
 {
-    board->setChessman(0, 2, whitePawn);
-    board->setChessman(1, 3, blackPawn);
-    std::vector<std::tuple<int, int>> possibleMoves = whitePawn->getPossibleMoves(board, 0, 2);
+    whitePawn->set(0,2);
+    blackPawn->set(1,3);
+    std::vector<Move*> possibleMoves = whitePawn->getPossibleMoves();
 
     ASSERT_EQ(possibleMoves.size(), 2);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,3)), possibleMoves.end());
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(1,3)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,2,0,3)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,2,1,3)), possibleMoves.end());
 
-    possibleMoves = blackPawn->getPossibleMoves(board, 1, 3);
+    possibleMoves = blackPawn->getPossibleMoves();
     ASSERT_EQ(possibleMoves.size(), 2);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(1,2)), possibleMoves.end());
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,2)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(1,3,1,2)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(1,3,0,2)), possibleMoves.end());
 
 }
 
@@ -112,14 +113,13 @@ TEST_F(PawnTest, shouldCanMoveDiagonallyIfThereIsEnemyChessman)
  */
 TEST_F(PawnTest, shouldBlackPawnCanDoEnPassant)
 {
-    board->setChessman(0, 1, whitePawn);
-    board->setChessman(1, 3, blackPawn);
-    board->move(0, 1, 0, 3);
-    std::vector<std::tuple<int, int>> possibleMoves = blackPawn->getPossibleMoves(board, 1, 3);
+    whitePawn->set(0,1);
+    blackPawn->set(1,3);
+    board->move(new RegularMove(0,1,0,3));
+    std::vector<Move*> possibleMoves = blackPawn->getPossibleMoves();
     ASSERT_EQ(possibleMoves.size(), 2);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(1,2)), possibleMoves.end());
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,2)), possibleMoves.end());
-
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(1,3,1,2)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(1,3,0,2)), possibleMoves.end());
 }
 
 /**
@@ -127,12 +127,11 @@ TEST_F(PawnTest, shouldBlackPawnCanDoEnPassant)
  */
 TEST_F(PawnTest, shouldWhitePawnCanDoEnPassant)
 {
-    board->setChessman(0, 4, whitePawn);
-    board->setChessman(1, 6, blackPawn);
-    board->move(1, 6, 1, 4);
-    std::vector<std::tuple<int, int>> possibleMoves = whitePawn->getPossibleMoves(board, 0, 4);
+    whitePawn->set(0,4);
+    blackPawn->set(1,6);
+    board->move(new RegularMove(1,6,1,4));
+    std::vector<Move*> possibleMoves = whitePawn->getPossibleMoves();
     ASSERT_EQ(possibleMoves.size(), 2);
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(0,5)), possibleMoves.end());
-    ASSERT_NE(std::find(possibleMoves.begin(), possibleMoves.end(), std::make_tuple(1,5)), possibleMoves.end());
-
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,4,0,5)), possibleMoves.end());
+    ASSERT_NE(std::find_if(possibleMoves.begin(), possibleMoves.end(), RegularMove(0,4,1,5)), possibleMoves.end());
 }

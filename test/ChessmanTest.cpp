@@ -7,14 +7,10 @@
  * @version 1.0 29.08.2018
 */
 
-#include <Queen.h>
-#include <King.h>
-#include <Bishop.h>
-#include <Knight.h>
-#include <Rook.h>
-#include <Pawn.h>
-#include "gtest/gtest.h"
 
+#include "gtest/gtest.h"
+#include "Queen.h"
+#include "Board.h"
 
 /**
  * Fixture that creates, stores and deletes tested instance of Chessman
@@ -26,86 +22,59 @@ public:
      */
     ChessmanTest()
     {
-        whiteQueen  = new Queen(true);
-        whitePawn   = new Pawn(true);
-        whiteKing   = new King(true);
-        blackKnight = new Knight(false);
-        blackRook   = new Rook(false);
-        blackBishop = new Bishop(false);
+        board = new Board();
+        queen = new Queen(true, board);
     }
     /**
      * deletes chessman
      */
-    ~ChessmanTest() override
-    {
-        delete(whiteQueen);
-        delete(whitePawn);
-        delete(whiteKing);
-        delete(blackBishop);
-        delete(blackRook);
-        delete(blackKnight);
-    }
+    ~ChessmanTest() override = default;
 
-    Chessman* whiteQueen;
-    Chessman* whitePawn;
-    Chessman* whiteKing;
-    Chessman* blackBishop;
-    Chessman* blackRook;
-    Chessman* blackKnight;
+    Queen* queen;
+    Board* board;
 };
 
-
 /**
- * Checks if queen chessman works and exists
+ * Checks if Chessman can be set properly on board
  */
-TEST_F(ChessmanTest, shouldThereBeQueen)
+TEST_F(ChessmanTest, shouldProperlySetChessmanOnBoard)
 {
-    ASSERT_EQ(whiteQueen->isWhite(), true);
-    ASSERT_NE(dynamic_cast<Queen*>(whiteQueen), nullptr);
+    queen->set(0, 2);
+    ASSERT_EQ(queen->getX(), 0);
+    ASSERT_EQ(queen->getY(), 2);
+    ASSERT_EQ(board->getChessman(0, 2), queen);
 }
 
 /**
- * Checks if king chessman works and exists
+ * Checks if Chessman can be moved on board on empty fields with set method
  */
-TEST_F(ChessmanTest, shouldThereBeKing)
+TEST_F(ChessmanTest, shouldMoveToOtherEmptyField)
 {
-    ASSERT_EQ(whiteKing->isWhite(), true);
-    ASSERT_NE(dynamic_cast<King*>(whiteKing), nullptr);
+    queen->set(0, 2);
+    ASSERT_EQ(queen->getX(), 0);
+    ASSERT_EQ(queen->getY(), 2);
+    ASSERT_EQ(board->getChessman(0, 2), queen);
+
+    queen->set(1, 2);
+    ASSERT_EQ(queen->getX(), 1);
+    ASSERT_EQ(queen->getY(), 2);
+    ASSERT_EQ(board->getChessman(1, 2), queen);
+    ASSERT_EQ(board->getChessman(0, 2), nullptr); //last position should be now empty
 }
+
 
 /**
- * Checks if pawn chessman works and exists
+ * Checks if Chessman removed from game can not be set anywhere
  */
-TEST_F(ChessmanTest, shouldThereBePawn)
+TEST_F(ChessmanTest, shouldNotDoAnythingIfBoardPointerInsideIsEmpty)
 {
-    ASSERT_EQ(whitePawn->isWhite(), true);
-    ASSERT_NE(dynamic_cast<Pawn*>(whitePawn), nullptr);
-}
+    queen->set(0, 2);
+    ASSERT_EQ(queen->getX(), 0);
+    ASSERT_EQ(queen->getY(), 2);
+    ASSERT_EQ(board->getChessman(0, 2), queen);
+    queen->remove();
 
-/**
- * Checks if bishop chessman works and exists
- */
-TEST_F(ChessmanTest, shouldThereBeBishop)
-{
-    ASSERT_EQ(blackBishop->isWhite(), false);
-    ASSERT_NE(dynamic_cast<Bishop*>(blackBishop), nullptr);
+    ASSERT_EQ(queen->getX(), -1); //these coordinates do not exists on board
+    ASSERT_EQ(queen->getY(), -1); //these coordinates do not exists on board
+    ASSERT_EQ(board->getChessman(0, 2), nullptr);
 }
-
-/**
- * Checks if rook chessman works and exists
- */
-TEST_F(ChessmanTest, shouldThereBeRook)
-{
-    ASSERT_EQ(blackRook->isWhite(), false);
-    ASSERT_NE(dynamic_cast<Rook*>(blackRook), nullptr);
-}
-
-/**
- * Checks if knight chessman works and exists
- */
-TEST_F(ChessmanTest, shouldThereBeKnight)
-{
-    ASSERT_EQ(blackKnight->isWhite(), false);
-    ASSERT_NE(dynamic_cast<Knight*>(blackKnight), nullptr);
-}
-

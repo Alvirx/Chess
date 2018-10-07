@@ -8,12 +8,18 @@
 */
 //
 
+#include <Rook.h>
+
 #include "Rook.h"
 
-std::vector<std::tuple<int, int>> Rook::getPossibleMoves(Board *board, int x, int y)
+std::vector<Move *> Rook::getPossibleMoves()
 {
-    std::vector<std::tuple<int, int>> possibleMoves;
+    std::vector<Move*> possibleMoves;
     return possibleMoves;
 }
 
-Rook::Rook(bool white) : Chessman(white) {}
+
+
+Rook::Rook(bool white, Board *board) : Chessman(white, board) {}
+
+

@@ -9,11 +9,11 @@
 
 #include "Queen.h"
 
-std::vector<std::tuple<int, int>> Queen::getPossibleMoves(Board *board, int x, int y) {
-    std::vector<std::tuple<int, int>> possibleMoves;
+std::vector<Move *> Queen::getPossibleMoves() {
+    std::vector<Move*> possibleMoves;
     return possibleMoves;
 }
 
-Queen::Queen(bool white) : Chessman(white) {
 
-}
+
+Queen::Queen(bool white, Board *board) : Chessman(white, board) {}

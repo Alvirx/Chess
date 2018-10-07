@@ -10,9 +10,11 @@
 
 #include "Knight.h"
 
-std::vector<std::tuple<int, int>> Knight::getPossibleMoves(Board *board, int x, int y) {
-    std::vector<std::tuple<int, int>> possibleMoves;
+std::vector<Move *> Knight::getPossibleMoves() {
+    std::vector<Move*> possibleMoves;
     return possibleMoves;
 }
 
-Knight::Knight(bool white) : Chessman(white) {}
+
+
+Knight::Knight(bool white, Board *board) : Chessman(white, board) {}

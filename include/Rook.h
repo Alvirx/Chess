@@ -16,9 +16,10 @@
 
 class Rook : public Chessman{
 public:
-    explicit Rook(bool white);
 
-    std::vector<std::tuple<int, int>> getPossibleMoves(Board *board, int x, int y) override;
+    Rook(bool white, Board *board);
+
+    std::vector<Move *> getPossibleMoves() override;
 
 };
 
